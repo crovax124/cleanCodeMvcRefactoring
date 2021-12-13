@@ -6,6 +6,7 @@ const mongodbStore = require('connect-mongodb-session');
 const csrf = require('csurf');
 
 const db = require('./data/database');
+const authRoutes = require('./routes/auth');                                            //import auth.js file
 const blogRoutes = require('./routes/blog');
 
 const MongoDBStore = mongodbStore(session);
@@ -47,8 +48,9 @@ app.use(async function(req, res, next) {
 
   next();
 });
-
+app.use(authRoutes);                                                                //use the auth.js file routes
 app.use(blogRoutes);
+
 
 app.use(function(error, req, res, next) {
   res.render('500');
