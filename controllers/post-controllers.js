@@ -6,10 +6,6 @@ function getHomepage(req, res) {
 }
 
 async function getAdminPage(req, res) {
-  if (!res.locals.isAuth) {
-    return res.status(401).render("401");
-  }
-
   const posts = await Post.fetchAll();
 
   const sessionInputData = validation.getSessionErrorData(req, {
@@ -49,8 +45,15 @@ async function postAdmin(req, res) {
   res.redirect("/admin");
 }
 
-async function getEditPost(req, res) {
-  const post = new Post(null, null, req.params.id);
+async function getEditPost(req, res, next) {
+  let post;
+  try {
+    const post = new Post(null, null, req.params.id);
+  } catch (e) {
+    next(error);
+    return;
+  }
+
   await post.fetch();
 
   if (!post.title || !post.content) {

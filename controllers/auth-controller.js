@@ -1,6 +1,10 @@
 const validation = require("../util/validation");
 const User = require("../models/user");
 
+function get401 (req,res) {
+    res.status(401).render('401');
+}
+
 function getSignup(req, res) {
   const sessionErrorData = validation.getSessionErrorData(req, {
     email: "",
@@ -130,4 +134,5 @@ module.exports = {
   postSignup: postSignup,
   postLogin: postLogin,
   logout: logout,
+  get401: get401
 };
